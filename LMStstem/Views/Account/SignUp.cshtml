@@ -1,0 +1,173 @@
+﻿@model LMStstem.Models.UserModel
+@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <section class="content mt-2">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Sign Up
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @*Col 1*@
+                                <div class="col-sm-6">
+                                    <div class="row rowborderbottom">
+                                        <div class="col-sm-4 label">
+                                            <span><i class="flaticon-account blue"></i>&nbsp;&nbsp;Name</span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Username, "", new { @class = "form-control form-control-sm", @required = true, tabindex="1" })
+                                        </div>
+                                    </div>
+                                    <div class="row rowborderbottom">
+                                        <div class="col-sm-4 label">
+                                            <span><i class="flaticon-telephone blue"></i>&nbsp;&nbsp;Phone</span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.UserPhoneNo, "", new { @class = "form-control form-control-sm editable" ,@required = true, tabindex = "3" })
+                                        </div>
+                                    </div>
+                                    <div class="row rowborderbottomremove">
+                                        <div class="col-sm-4 label">
+                                            <span><i class="fas fa-user-secret blue blue"></i>&nbsp;&nbsp;Password</span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            @Html.PasswordFor(m => m.UserPassword, new
+                                       {
+                                           @class = "form-control form-control-sm",
+                                           placeholder = "Password",
+                                           name = "Password",
+                                           id = "password",
+                                           type = "password",
+                                           @required = true,
+                                           tabindex = "5"
+                                       })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*Col 2*@
+                            <div class="col-sm-6 ">
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-account blue"></i>&nbsp;&nbsp;Role</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.DropDownListFor(m => m.UserRole, new List<SelectListItem>
+                                     {
+                                     new SelectListItem{ Text="Select", Value = "" }
+                                      }, new { @class = "form-control form-control-sm", id = "userRole", @required = true, tabindex = "2" })
+                                        @*@Html.TextBoxFor(m => m.UserRole, "", new { @class = "form-control form-control-sm", @required = true, tabindex = "2" })*@
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-email-1 blue"></i>&nbsp;&nbsp;E-Mail</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.UserEmail, "", new { @class = "form-control form-control-sm editable", @required = true, tabindex = "4" })
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottomremove">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="fas fa-user-secret blue"></i>&nbsp;&nbsp; Cofirm Password</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new
+                                   {
+                                       @class = "form-control form-control-sm",
+                                       placeholder = "Password",
+                                       name = "Password",
+                                       id = "confpassword",
+                                       type = "password",
+                                       @required = true,
+                                       tabindex = "6"
+                                   })
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                                <div class="row buttonPos">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-2 buttonPos">
+                                        <button type="submit" id="submit" class="btn btn-block btn-outline-info btn-sm" tabindex="7" value="Submit">Sign Up</button>
+                                    </div>
+                                    <div class="col-md-2 buttonPos">
+                                        <a class="btn btn-block btn-outline-info btn-sm" href='@Url.Action("Login","Account")'>Login</a>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 8000
+    });
+    $("#submit").on('click', function () {
+        if ($("#confpassword").val() === $("#password").val()) {
+            return true;
+        }
+        else {
+            Toast.fire({
+                type: 'warning',
+                title: '&nbsp;&nbsp; Password and Confirm Password should be Match!!'
+            });
+        }
+    })
+    $(document).ready(function () {
+        if (localStorage.getItem("LMSRoles") === null) {
+            $.getJSON("@Url.Action("GetRoles","Account")",
+                function (data) {
+                    if (data != '') {
+                        var ddloptions = '';
+                        localStorage.setItem("LMSRoles", JSON.stringify(data));
+                        $.each(data, function (index, value) {
+                            ddloptions = ddloptions + '<option value="' + value.RoleId + '" >' + value.Role + '</option>';
+                        });
+                        document.getElementById('userRole').innerHTML = '';
+                        $("#userRole").append(ddloptions);
+                    }
+                });
+        }
+        else {
+            var ddloptions = '';
+            var Roles = JSON.parse(localStorage.getItem("LMSRoles"));
+            $.each(Roles, function (index, value) {
+                ddloptions = ddloptions + '<option value="' + value.RoleId + '" >' + value.Role + '</option>';
+
+            });
+            document.getElementById('userRole').innerHTML = '';
+            $("#userRole").append(ddloptions);
+        }
+    });
+</script>
+
+
+

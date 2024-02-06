@@ -1,0 +1,95 @@
+﻿@model IEnumerable<LMStstem.Models.BookModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@*<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Libra Index</h2>
+            </div>
+        </div>
+    </div>
+</section>*@
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card ">
+                <div class="card-body list-scroll">
+                    <div class="row mb-2">
+                        <div class="new-button mr-2">
+                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("MessageCard","Message",new { area="librarians"})'> Add New Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
+                        </div>
+                        <div class="new-button">
+                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("MessageCard","Message",new { area="librarians"})'> Add New Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
+                        </div>
+                    </div>
+                    <table id="Messagelist" class="table table-bordered table-hover dataTable Message" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center" title="Book ID"> <i class="flaticon-portfolio orange"></i>&nbsp;Id</th>
+                                <th class="text-center "> <i class="flaticon-notebook blue"></i>&nbsp;Title</th>
+                                <th class="text-center "> <i class="flaticon-notebook blue"></i>&nbsp;Author</th>
+                                <th class="text-center"> <i class="fa fa-sticky-note blue"></i>&nbsp;ISBN</th>
+                                <th class="text-center"> <i class="fas fa-pen blue"></i>&nbsp;Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var m in Model)
+                                {
+                                    <tr>
+                                        <td class="text-right">@m.BookID</td>
+                                        <td class="text-left" title="@m.Title">@m.Title</td>
+                                        <td class="text-left" title="@m.Author">@m.Author</td>
+                                        <td class="text-left">@m.ISBN</td>
+                                        <td class="text-left">
+                                            <div class="actioncol">
+                                                <a class="mr-5" href="" title="Issue book"><i class="fas fa-book blue"></i>Borrow</a>
+                                                <a class="" href="" title="Return Boook"><i class="fas fa-undo-alt blue"></i>Return</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 4000
+    });
+    $(document).ready(function () {
+        $('.dataTable').DataTable({
+            responsive: true,
+            searching: true, 
+            order: [[0, 'desc']],
+            "pagingType": "full_numbers"
+        });
+        $('.dataTables_filter').html('');
+        $('.dataTables_info').html('');
+    });
+    if ('@TempData["Message"]' != '')
+    {
+        Toast.fire({
+            type: 'success',
+            title: '&nbsp;&nbsp;@TempData["Message"]'
+        });
+    }
+    else if ('@TempData["ErrorMessage"]' != '') {
+        Toast.fire({
+            type: 'warning',
+            title: '&nbsp;&nbsp;@TempData["ErrorMessage"]'
+        });
+    }
+</script>

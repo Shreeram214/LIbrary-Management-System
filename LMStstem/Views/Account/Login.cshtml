@@ -1,0 +1,159 @@
+﻿@model LMStstem.Models.UserModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link runat="server" rel="icon" href="~/Images/LMSystem.png" />
+    <title>Login</title>
+    <script src="~/Content/ThemeFiles/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="hold-transition login-page loginpage">
+            <div class="row">
+                <div id="target" class="login-box">
+                    <div class="card">
+                        <div class="card-body login-card-body">
+                            <div class="login-logo">
+                                <img src="~/Images/LMSystem.png" style="width:40%" />
+                            </div>
+                            <p class="login-box-msg">Sign in to start your session</p>
+                            <form method="post">
+                                <label>User Email</label>
+                                <div style="display:flex">
+
+                                    @Html.TextBoxFor(m => m.UserEmail, new
+                               {
+                                   @class = "form-control form-control-md search",
+                                   placeholder = "User Email",
+                                   name = "UserEmail",
+                                       type = "text",
+                                   id = "staffid",
+                                   tabindex = "1"
+                               })
+                                    <div class="input-group-append">
+                                        <div class="input-group-text" style="font-size: 22px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label>Password</label>
+                                <div style="display:flex">
+
+                                    @Html.PasswordFor(m => m.UserPassword, new
+                               {
+                                   @class = "form-control form-control-md",
+                                   placeholder = "Password",
+                                   name = "Password",
+                                   id = "password",
+                                   type = "password",
+                                   tabindex = "2"
+                               })
+                                    <div class="input-group-append">
+                                        <div class="input-group-text ">
+                                            <i class="fas fa-eye-slash" id="Showhide" onclick="showPass()" style="cursor:pointer"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label>Role</label>
+                                <div style="display:flex">
+                                    @Html.DropDownListFor(m => m.UserRole, new List<SelectListItem>
+                                 {
+                                 new SelectListItem{ Text="Select", Value = "" }
+                                  }, new { @class = "form-control form-control-md", id = "userRole", @required = true, tabindex = "3" })
+                                    <div class="input-group-append">
+                                        <div class="input-group-text" style="font-size: 22px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group mb-3">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <button type="submit" id="login" class="btn btn-primary btn-block login-button"><i class="fa fa-unlock"></i>&nbsp;&nbsp;Sign In</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- /.social-auth-links -->
+                            <p class="mb-1">
+                                <a href="@Url.Action("SignUp","Account")">Sign Up</a>
+                            </p>
+                            <p class="mb-1">
+                                <a href="@Url.Action("ForgotPassword","Account")">Forgot Password</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 4000
+    });
+    $(document).ready(function () {
+        if ('@ViewBag.ErrorMessage' != '')
+        {
+            Toast.fire({
+                type: 'error',
+                title: '&nbsp;&nbsp;@ViewBag.ErrorMessage'
+            });
+        }
+
+        if (localStorage.getItem("LMSRoles") === null) {
+            $.getJSON("@Url.Action("GetRoles","Account")",
+                function (data) {
+                    if (data != '') {
+                        var ddloptions = '';
+                        localStorage.setItem("LMSRoles", JSON.stringify(data));
+                        $.each(data, function (index, value) {
+                            ddloptions = ddloptions + '<option value="' + value.RoleId + '" >' + value.Role + '</option>';
+                        });
+                        document.getElementById('userRole').innerHTML = '';
+                        $("#userRole").append(ddloptions);
+                    }
+                });
+        }
+        else {
+            var ddloptions = '';
+            var Roles = JSON.parse(localStorage.getItem("LMSRoles"));
+            $.each(Roles, function (index, value) {
+                ddloptions = ddloptions + '<option value="' + value.RoleId + '" >' + value.Role + '</option>';
+            });
+            document.getElementById('userRole').innerHTML = '';
+            $("#userRole").append(ddloptions);
+        }
+    });
+    function showPass() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+            var abc = document.getElementById('Showhide');
+            abc.classList.remove('fa-eye-slash');
+            abc.classList.add('fa-eye');
+
+        } else {
+            x.type = "password";
+            var abc = document.getElementById('Showhide');
+
+            abc.classList.remove('fa-eye');
+            abc.classList.add('fa-eye-slash');
+        }
+    }
+</script>
+</body>
+</html>

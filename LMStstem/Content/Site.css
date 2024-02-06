@@ -1,0 +1,83 @@
+﻿.body-content {
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+}
+
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 90%;
+}
+
+/*Layout Css*/
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+    margin-left: 0px !important;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: #007bff;
+}
+
+.green {
+    color: darkgreen;
+}
+
+.orange {
+    color: darkorange;
+}
+
+.pink {
+    color: #e644bc;
+}
+
+.Cardborder {
+    border: 1px solid #17a2b8 !important;
+    margin-bottom: 1px !important;
+}
+
+
+.card-header {
+    /*padding: .5rem 1rem !important;*/
+    /*background: #425b78 !important;*/
+}
+
+
+.pos-logo {
+    height: 60px;
+    padding: 2px 10px;
+}
+.rowborderbottom {
+    border-bottom: 1px solid #c1c1c1;
+    height: auto;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+.rowborderbottomremove {
+    border-bottom: 0px solid #c1c1c1;
+    height: auto;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+.actioncol{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.new-button {
+    width:fit-content;
+    /*height: 3rem;*/
+}
