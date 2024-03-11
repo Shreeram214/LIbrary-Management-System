@@ -1790,6 +1790,8 @@
     <Content Include="Areas\Staff\Views\Home\Index.cshtml" />
     <Content Include="Areas\Student\Views\Home\Index.cshtml" />
     <Content Include="Areas\librarians\Views\Home\Index.cshtml" />
+    <Content Include="Areas\librarians\Views\Home\AddNewBook.cshtml" />
+    <Content Include="Areas\librarians\Views\Home\BorrowBook.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

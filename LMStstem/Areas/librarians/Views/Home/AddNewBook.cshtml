@@ -1,0 +1,135 @@
+﻿@model LMStstem.Models.BookModel
+@{
+    ViewBag.Title = "AddNewBook";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>New Book</h1>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm("AddNewBook", "Home", new { area = "librarians" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-info Cardborder">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Details
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @*Col 1*@
+                        <div class="col-sm-6">
+                            <div class="row rowborderbottom">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-portfolio orange"></i>&nbsp;&nbsp;Title</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Title, "", new { @class = "form-control form-control-sm", tabindex = "1", required = "true", id = "booktitle", placeholder = "Title" })
+                                </div>
+                            </div>
+                            <div class="row rowborderbottomremove">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-notebook blue"></i>&nbsp;&nbsp; ISBN</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.ISBN, "", new { @class = "form-control form-control-sm editable", tabindex = "3", required = "true", placeholder = "ISBN" })
+                                </div>
+
+                            </div>
+                        </div>
+
+                        @*Col 2*@
+                        <div class="col-sm-6">
+                            <div class="row rowborderbottom">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-portfolio orange"></i>&nbsp;&nbsp;Author</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Author, "", new { @class = "form-control form-control-sm", required = "true", tabindex = "2", id = "bookauthor", placeholder = "Author" })
+                                </div>
+                            </div>
+                            <div class="row rowborderbottomremove">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-portfolio blue"></i>&nbsp;&nbsp; Quantity</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Quantity, "", new { @class = "form-control form-control-sm ", required = "true", tabindex = "4", id = "bookQuantity", type = "number", placeholder = "Quantity" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row buttonPos mt-2">
+                <div class="col-md-4"></div>
+                <div class="col-md-2 buttonPos">
+                    <button type="submit" id="submit" tabindex="5" class="btn btn-block btn-outline-success btn-sm" value="Submit"><i class="fa fa-check"></i>&nbsp;&nbsp;Submit</button>
+                </div>
+                <div class="col-md-2 buttonPos">
+                    <a class="btn btn-block btn-outline-danger btn-sm" tabindex="6" href='@Url.Action("Index", "Home",new { area = "librarians"})'><i class="fa fa-close"></i>&nbsp;&nbsp;Close</a>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+
+        </div>
+    </section>
+}
+<script>
+    $("#booktitle").on("change", function(event, index) {
+        var bookTitle = $(this).val();
+        $.ajax({
+            url: "@Url.Action("CheckBook", "Home", new {area= "librarians" })",
+            dataType: "json",
+            type: "POST",
+            async: false,
+            data: { 'booktitle': bookTitle },
+            success: function (data) {
+                if (data) {
+                    $(this).val("");
+                    Toast.fire({
+                        type: 'warning',
+                        title: '&nbsp;&nbsp;Title Already Exist please check.'
+                    });
+                }
+            }
+        });
+    });
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 4000
+    });
+    if ('@TempData["Message"]' != '')
+    {
+        Toast.fire({
+            type: 'success',
+            title: '&nbsp;&nbsp;@TempData["Message"]'
+        });
+    }
+    else if ('@TempData["ErrorMessage"]' != '') {
+        Toast.fire({
+            type: 'warning',
+            title: '&nbsp;&nbsp;@TempData["ErrorMessage"]'
+        });
+    }
+</script>
+

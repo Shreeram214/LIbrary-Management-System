@@ -3,15 +3,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-@*<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Libra Index</h2>
-            </div>
-        </div>
-    </div>
-</section>*@
 <section class="content">
     <div class="row">
         <div class="col-12">
@@ -19,10 +10,10 @@
                 <div class="card-body list-scroll">
                     <div class="row mb-2">
                         <div class="new-button mr-2">
-                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("MessageCard","Message",new { area="librarians"})'> Add New Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
+                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("AddNewBook","Home",new { area="librarians"})'> Add New Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
                         </div>
                         <div class="new-button">
-                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("MessageCard","Message",new { area="librarians"})'> Add New Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
+                            <a class="btn btn-block btn btn-outline-info btn-sm" href='@Url.Action("MessageCard","Message",new { area="librarians"})'> Delete Book&nbsp;&nbsp;<i class="far fa-plus-square"></i></a>
                         </div>
                     </div>
                     <table id="Messagelist" class="table table-bordered table-hover dataTable Message" style="width:100%">
@@ -47,7 +38,7 @@
                                         <td class="text-left">@m.ISBN</td>
                                         <td class="text-left">
                                             <div class="actioncol">
-                                                <a class="mr-5" href="" title="Issue book"><i class="fas fa-book blue"></i>Borrow</a>
+                                                <a class="mr-5" href="@Url.Action("BorrowBook","Home",new { area = "librarians",BookId=m.BookID,Title=m.Title })" title="Issue book"><i class="fas fa-book blue"></i>Borrow</a>
                                                 <a class="" href="" title="Return Boook"><i class="fas fa-undo-alt blue"></i>Return</a>
                                             </div>
                                         </td>

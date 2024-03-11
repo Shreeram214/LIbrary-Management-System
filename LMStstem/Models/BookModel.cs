@@ -17,6 +17,7 @@ namespace LMStstem.Models
     {
         public int TransactionID { get; set; }
         public int BookID { get; set; }
+        public string Title { get; set; }
         public int UserID { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime? ReturnDate { get; set; }

@@ -89,14 +89,18 @@ namespace LMStstem.DataAccess
                 SqlCommand cmd = new SqlCommand("BooksSP", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "BorroweBook");
-                cmd.Parameters.AddWithValue("@StatementType", model.BookID);
-                cmd.Parameters.AddWithValue("@StatementType", model.UserID);
+                cmd.Parameters.AddWithValue("@BookId", model.BookID);
+                cmd.Parameters.AddWithValue("@UserID", model.UserID);
                 con.Open();
                 DataTable dt = new DataTable();
                 dt.Load(cmd.ExecuteReader());
                 con.Close();
-                string response = dt.Rows[0]["Result"].ToString();
-                return response;
+                if (dt.Rows.Count > 0)
+                {
+                    string response = dt.Rows[0]["ID"].ToString();
+                    return response;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -147,5 +151,81 @@ namespace LMStstem.DataAccess
                 throw ex;
             }
         }
+        public string AddNewBook(BookModel model)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("BooksSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "AddNewBook");
+                cmd.Parameters.AddWithValue("@BookTitle", model.Title);
+                cmd.Parameters.AddWithValue("@BookAuthor", model.Author);
+                cmd.Parameters.AddWithValue("@ISBN", model.ISBN);
+                cmd.Parameters.AddWithValue("@Quantity", model.Quantity);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if(dt.Rows.Count > 0)
+                {
+                    string response = dt.Rows[0]["ID"].ToString();
+                    return response;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool CheckDuplicate(string Title)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("BooksSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "CheckDuplicate");
+                cmd.Parameters.AddWithValue("@BookTitle", Title);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if (dt.Rows.Count > 0)
+                {
+                    //string response = dt.Rows[0]["ID"].ToString();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool CheckUser(string UserId)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("AccountSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "CheckUser");
+                cmd.Parameters.AddWithValue("@UserID", UserId);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if (dt.Rows.Count > 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }
