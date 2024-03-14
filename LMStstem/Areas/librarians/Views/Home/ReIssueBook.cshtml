@@ -1,0 +1,181 @@
+﻿@model LMStstem.Models.BookTransactionModel
+@{
+    ViewBag.Title = "ReIssueBook";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>ReIssue Book</h1>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm("ReIssueBook", "Home", new { area = "librarians" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-info Cardborder">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Details
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @*Col 1*@
+                        <div class="col-sm-6">
+                            <div class="row rowborderbottom">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-portfolio orange"></i>&nbsp;&nbsp;Book Title</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.Title, "", new { @class = "form-control form-control-sm", tabindex = "1", required = "true", @readonly = "readonly", id = "booktitle", placeholder = "Title" })
+                                    @Html.HiddenFor(m => m.BookID, new { id = "hdnbookid" })
+                                </div>
+                            </div>
+                            <div class="row rowborderbottomremove">
+                                <div class="col-sm-4 label">
+                                    <span><i class="fas fa-calendar blue"></i>&nbsp;&nbsp; Issue Date</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.IssueDate, "", new { @class = "form-control form-control-sm editable", id = "issueDate", tabindex = "3", @readonly = "readonly", required = "true" })
+                                </div>
+                            </div>
+                            <div class="row rowborderbottomremove">
+                                <div class="col-sm-4 label">
+                                    <span><i class="flaticon-portfolio orange"></i>&nbsp;&nbsp;Fine Amount</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" readonly="readonly" value="0" id="fineamount" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Col 2*@
+                        <div class="col-sm-6">
+                            <div class="row rowborderbottom">
+                                <div class="col-sm-4 label">
+                                    <span><i class="fas fa-user orange"></i>&nbsp;&nbsp;User Id</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.UserID, "", new { @class = "form-control form-control-sm", required = "true", tabindex = "2", id = "userid", placeholder = "UserID" })
+                                </div>
+                            </div>
+                            <div class="row rowborderbottomremove">
+                                <div class="col-sm-4 label">
+                                    <span><i class="fas fa-calendar blue"></i>&nbsp;&nbsp; Return Date</span>
+                                </div>
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.ReturnDate, "", new { @class = "form-control form-control-sm ", id = "ReturnDate", required = "true", tabindex = "4", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row buttonPos mt-2">
+                <div class="col-md-4"></div>
+                <div class="col-md-2 buttonPos">
+                    <button type="submit" id="submit" tabindex="5" class="btn btn-block btn-outline-success btn-sm" value="Submit"><i class="fa fa-check"></i>&nbsp;&nbsp;Submit</button>
+                </div>
+                <div class="col-md-2 buttonPos">
+                    <a class="btn btn-block btn-outline-danger btn-sm" tabindex="6" href='@Url.Action("Index", "Home",new { area = "librarians"})'><i class="fa fa-close"></i>&nbsp;&nbsp;Close</a>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </section>
+}
+<script>
+    $("#userid").on("change", function(event, index) {
+        var UserId = $(this).val();
+        var $that = $(this);
+        var BookId = document.getElementById('hdnbookid').value;
+        $.ajax({
+            url: "@Url.Action("CheckUserReIssuebook", "Home", new {area= "librarians" })",
+            dataType: "json",
+            type: "POST",
+            async: false,
+            data: { 'UserId': UserId, 'BookId': BookId },
+            success: function (response) {
+                if (response.data != null) {
+                    debugger;
+                    var data = response.data;
+
+                    var IssueDate = data.IssueDate;
+                    var TimespanIssueDate = parseInt(IssueDate.match(/\d+/)[0]);
+                    document.getElementById("issueDate").value = new Date(TimespanIssueDate).toLocaleDateString();
+
+                    var ReturnDate = data.ReturnDate;
+                    var TimespanReturnDate = parseInt(ReturnDate.match(/\d+/)[0]);
+                    var ReturnDateoo = new Date(TimespanReturnDate);
+                    document.getElementById("ReturnDate").value = ReturnDateoo.toLocaleDateString();
+
+                    var currentTimestamp = new Date();
+                    var timeDiff = currentTimestamp - ReturnDateoo;
+                    var diff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                    if (diff <= 0) {
+                        diff = 0;
+                    }
+                    var Fine = diff * 2;
+                    document.getElementById("fineamount").value = Fine;
+                }
+                else {
+                    $that.val("0");
+                    Toast.fire({
+                        type: 'warning',
+                        title: '&nbsp;&nbsp;User Not Exist please check the User Id.'
+                    });
+                }
+            }
+        });
+    });
+
+    $("#submit").on('click', function (event, index) {
+        if ($("#userid").val() != '0') {
+            return true;
+        }
+        else {
+            Toast.fire({
+                type: 'warning',
+                title: '&nbsp;&nbsp;User Not Exist please check the User Id.'
+            });
+            return false;
+        }
+    })
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 4000
+    });
+    if ('@TempData["Message"]' != '')
+    {
+        Toast.fire({
+            type: 'success',
+            title: '&nbsp;&nbsp;@TempData["Message"]'
+        });
+    }
+    else if ('@TempData["ErrorMessage"]' != '') {
+        Toast.fire({
+            type: 'warning',
+            title: '&nbsp;&nbsp;@TempData["ErrorMessage"]'
+        });
+    }
+</script>
+
+
+
+
+

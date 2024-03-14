@@ -1,8 +1,60 @@
-﻿
+﻿@model IEnumerable<LMStstem.Models.BookModel>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
+<style>
+    .cardtextbox {
+        background: #e2e5e0a3;
+        font-weight: bold !important;
+        font-family: serif;
+        display: none;
+        color: black !important;
+    }
 
-<h2>Student Index</h2>
+    .containBox:hover .cardtextbox {
+        display: block;
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Available Books</h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-success">
+                <div class="card-body">
+                    <div class="row">
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            foreach (var book in Model)
+                            {
+                                <div class="col-md-6 col-lg-4 col-xl-2 mb-4">
+                                    <div class="card mb-2 bg-gradient-dark containBox">
+                                        <img class="card-img-top" src="https://img.freepik.com/free-vector/abstract-elegant-winter-book-cover_23-2148798745.jpg?size=338&ext=jpg&ga=GA1.1.1395880969.1710201600&semt=ais" alt="@book.Title">
+                                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                                            <div class="cardtextbox">
+                                                @* <h5 class="card-title text-black-50"></h5>*@
+                                                <p class="card-text pb-2 pt-1">@book.Title</p>
+                                                <a class="">- @book.Author</a>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

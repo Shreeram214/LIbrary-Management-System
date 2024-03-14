@@ -89,7 +89,7 @@ namespace LMStstem.Areas.librarians.Controllers
                 if (IssueBookStatus != null)
                 {
                     TempData["Message"] = "Borrowed Succefully.";
-                    return View("Index", new { area = "librarians" });
+                    return RedirectToAction("Index","Home", new { area = "librarians" });
                 }
                 TempData["ErrorMessage"] = "There is an error while Borrow book please contact Admin!";
                 return View(model);
@@ -103,6 +103,98 @@ namespace LMStstem.Areas.librarians.Controllers
         {
             var result = _booksDAL.CheckUser(UserId);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ReturnBook(string BookId, string Title)
+        {
+            try
+            {
+                var BookDetails = new BookTransactionModel();
+                DateTime currentDate = DateTime.Now;
+                BookDetails.BookID = Convert.ToInt32(BookId);
+                BookDetails.Title = Title;
+                BookDetails.IssueDate = currentDate;
+                BookDetails.ReturnDate = currentDate.AddDays(15);
+                return View(BookDetails);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        public ActionResult ReturnBook(BookTransactionModel model)
+        {
+            try
+            {
+                var IssueBookStatus = _booksDAL.ReturnBook(model);
+                if (IssueBookStatus != null)
+                {
+                    TempData["Message"] = "Returned Succefully.";
+                    return RedirectToAction("Index", "Home", new { area = "librarians" });
+                }
+                TempData["ErrorMessage"] = "There is an error while Return book please contact Admin!";
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public JsonResult CheckUserReturn(string UserId, string BookId)
+        {
+            var result = _booksDAL.CheckUserReturn(UserId, BookId);
+            var esponse = new
+            {
+                data = result
+            };
+            return Json(esponse, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region ReIsuue Book
+        public ActionResult ReIssueBook(string BookId, string Title)
+        {
+            try
+            {
+                var BookDetails = new BookTransactionModel();
+                DateTime currentDate = DateTime.Now;
+                BookDetails.BookID = Convert.ToInt32(BookId);
+                BookDetails.Title = Title;
+                BookDetails.IssueDate = currentDate;
+                BookDetails.ReturnDate = currentDate.AddDays(15);
+                return View(BookDetails);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        public ActionResult ReIssueBook(BookTransactionModel model)
+        {
+            try
+            {
+                var IssueBookStatus = _booksDAL.ReIssueBook(model);
+                if (IssueBookStatus != null)
+                {
+                    TempData["Message"] = "ReIssued Succefully.";
+                    return RedirectToAction("Index", "Home", new { area = "librarians" });
+                }
+                TempData["ErrorMessage"] = "There is an error while Return book please contact Admin!";
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public JsonResult CheckUserReIssuebook(string UserId, string BookId)
+        {
+            var result = _booksDAL.CheckUserReIssue(UserId, BookId);
+            var esponse = new
+            {
+                data = result
+            };
+            return Json(esponse, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

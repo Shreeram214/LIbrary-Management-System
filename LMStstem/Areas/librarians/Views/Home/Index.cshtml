@@ -39,7 +39,8 @@
                                         <td class="text-left">
                                             <div class="actioncol">
                                                 <a class="mr-5" href="@Url.Action("BorrowBook","Home",new { area = "librarians",BookId=m.BookID,Title=m.Title })" title="Issue book"><i class="fas fa-book blue"></i>Borrow</a>
-                                                <a class="" href="" title="Return Boook"><i class="fas fa-undo-alt blue"></i>Return</a>
+                                                <a class="mr-5" href="@Url.Action("ReIssueBook","Home",new { area = "librarians",BookId=m.BookID,Title=m.Title })" title="Reissue Boook"><i class="fas fa-retweet blue"></i>Re Issue</a>
+                                                <a class="" href="@Url.Action("ReturnBook","Home",new { area = "librarians",BookId=m.BookID,Title=m.Title })" title="Return Boook"><i class="fas fa-undo-alt blue"></i>Return Book</a>
                                             </div>
                                         </td>
                                     </tr>

@@ -44,6 +44,37 @@ namespace LMStstem.DataAccess
             }
         }
 
+        public UserModel GetUserDetails(string UserId,string RoleId)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("AccountSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "GetUserDetails");
+                cmd.Parameters.AddWithValue("@UserID", UserId);
+                cmd.Parameters.AddWithValue("@UserRole", RoleId);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if (dt.Rows.Count > 0)
+                {
+                    UserModel user = new UserModel();
+                    user.UserID = Convert.ToInt32(dt.Rows[0]["UserID"]);
+                    user.UserEmail = dt.Rows[0]["UserEmail"] != System.DBNull.Value ? Convert.ToString(dt.Rows[0]["UserEmail"]) : "";
+                    user.Username = dt.Rows[0]["Username"] != System.DBNull.Value ? Convert.ToString(dt.Rows[0]["Username"]) : "";
+                    user.UserPhoneNo = dt.Rows[0]["UserPhone"] != System.DBNull.Value ? Convert.ToString(dt.Rows[0]["UserPhone"]) : "";
+                    user.UserRole = dt.Rows[0]["UserRoleId"] != System.DBNull.Value ? Convert.ToInt32(dt.Rows[0]["UserRoleId"]) : 0;
+                    return user;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public int SignUp(UserModel model)
         {
             try

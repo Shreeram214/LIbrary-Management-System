@@ -7,26 +7,11 @@
     <script src="~/Content/ThemeFiles/plugins/jquery/jquery.min.js"></script>
     @System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @{ 
+        var UserRoleSes = Session["UserRole"].ToString();
+    }
     <link href="~/Content/Site.css" rel="stylesheet" />
-    <style>
-        /*body {
-            background-image: url('path/to/your/image.jpg');*/
-            /* Specify background properties */
-            /*background-size: cover;*/ /* Adjust the size of the background image */
-            /*background-position: center;*/ /* Center the background image */
-            /*background-repeat: no-repeat;*/ /* Do not repeat the background image */
-            /* Apply a blur effect to the background image */
-            /*filter: blur(5px);*/ /* Adjust the blur radius as needed */
-            /* You can also set background color in case the image is not available or fails to load */
-            /*background-color: #f0f0f0;*/
-            /* Ensure the body takes up the full viewport height */
-            /*height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }*/
-    </style>
+
 </head>
 <body class="hold-transition layout-top-nav">
     <div class="wrapper">
@@ -34,10 +19,7 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href='@Url.Action("POSHome", "POSHome")'><img src="~/Images/LMSystem.png" class="pos-logo" /></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link menu-class"> &nbsp;<b> @ViewBag.Customer </b></a>
+                    <a href='@Url.Action("Index", "Home", new { area = UserRoleSes })'><img src="~/Images/LMSystem.png" class="pos-logo" /></a>
                 </li>
             </ul>
             @if (ViewBag.Title != "SignUp")

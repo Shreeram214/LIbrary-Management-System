@@ -30,13 +30,17 @@ namespace LMStstem.Controllers
                     FormsAuthentication.SetAuthCookie(model.UserID.ToString(), true);
                     Session.Add("UserId", User.UserID);
                     Session.Add("UserName", User.Username);
-                    Session.Add("UserRole", User.UserRole);
+                    Session.Add("UserRoleId", User.UserRole);
                     if (User.UserRole == 3)
-                        return RedirectToAction("Index", "Home",new { area = "librarians"});
+                    {
+                        Session.Add("UserRole", "librarians");
+                        return RedirectToAction("Index", "Home", new { area = "librarians" });
+                    }
                     else if (User.UserRole == 2)
-                        return RedirectToAction("Index", "Home", new { area = "Staff" });
-                    else if (User.UserRole == 1)
+                    {
+                        Session.Add("UserRole", "Student");
                         return RedirectToAction("Index", "Home", new { area = "Student" });
+                    }
                     else
                     {
                         ViewBag.ErrorMessage = "Not valid Role!!!";
@@ -58,6 +62,14 @@ namespace LMStstem.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
+        }
+
+        public new ActionResult Profile()
+        {
+            var UserId = Session["UserId"].ToString();
+            var UserRole = Session["UserRoleId"].ToString();
+            var UserInfo = _account.GetUserDetails(UserId, UserRole);
+            return View(UserInfo);
         }
 
         public ActionResult SignUp()
@@ -90,7 +102,6 @@ namespace LMStstem.Controllers
         {
             return View();
         }
-
 
         public JsonResult GetRoles()
         {

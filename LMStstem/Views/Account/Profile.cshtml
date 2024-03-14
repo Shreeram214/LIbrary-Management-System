@@ -1,0 +1,109 @@
+﻿@model LMStstem.Models.UserModel
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Profile</h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            @Session["UserRole"].ToString().ToUpper()
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @*Col 1*@
+                            <div class="col-sm-6">
+
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-portfolio orange"></i>&nbsp;&nbsp;User ID</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.UserID, "", new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-account blue"></i>&nbsp;&nbsp;Store Name</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.UserRole, "", new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottomremove">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-telephone blue"></i>&nbsp;&nbsp;Phone No</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.UserPhoneNo, "", new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Col 2*@
+                            <div class="col-sm-6 ">
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-contract blue"></i>&nbsp;&nbsp;User Name</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.Username, "", new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottom">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-account blue"></i>&nbsp;&nbsp;User Role </span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" value="@Session["UserRole"].ToString()" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="row rowborderbottomremove">
+                                    <div class="col-sm-4 label">
+                                        <span><i class="flaticon-email blue"></i>&nbsp;&nbsp;Email</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @Html.TextBoxFor(m => m.UserEmail, "", new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row buttonPos">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2 buttonPos">
+                                <a class="btn btn-block btn-outline-danger btn-sm" href='@Url.Action("Index", "Home", new { area = Session["UserRole"].ToString() })'><i class="fa fa-close"></i>&nbsp;&nbsp;Close</a>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

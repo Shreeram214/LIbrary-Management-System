@@ -114,9 +114,8 @@ namespace LMStstem.DataAccess
                 SqlCommand cmd = new SqlCommand("BooksSP", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "ReturnBook");
-                cmd.Parameters.AddWithValue("@StatementType", model.TransactionID);
-                cmd.Parameters.AddWithValue("@StatementType", model.BookID);
-                cmd.Parameters.AddWithValue("@StatementType", model.UserID);
+                cmd.Parameters.AddWithValue("@BookId", model.BookID);
+                cmd.Parameters.AddWithValue("@UserID", model.UserID);
                 con.Open();
                 DataTable dt = new DataTable();
                 dt.Load(cmd.ExecuteReader());
@@ -136,9 +135,8 @@ namespace LMStstem.DataAccess
                 SqlCommand cmd = new SqlCommand("BooksSP", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "ReIssueBook");
-                cmd.Parameters.AddWithValue("@StatementType", model.TransactionID);
-                cmd.Parameters.AddWithValue("@StatementType", model.BookID);
-                cmd.Parameters.AddWithValue("@StatementType", model.UserID);
+                cmd.Parameters.AddWithValue("@BookId", model.BookID);
+                cmd.Parameters.AddWithValue("@UserID", model.UserID);
                 con.Open();
                 DataTable dt = new DataTable();
                 dt.Load(cmd.ExecuteReader());
@@ -219,6 +217,60 @@ namespace LMStstem.DataAccess
                     return false;
                 }
                 return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public BookTransactionModel CheckUserReturn(string UserId,string BookId)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("BooksSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "CheckUserReturn");
+                cmd.Parameters.AddWithValue("@UserID", UserId);
+                cmd.Parameters.AddWithValue("@BookId", BookId);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if (dt.Rows.Count > 0)
+                {
+                    var booktransaction = new BookTransactionModel();
+                    booktransaction.IssueDate = Convert.ToDateTime(dt.Rows[0]["IssueDate"]);
+                    booktransaction.ReturnDate = Convert.ToDateTime(dt.Rows[0]["ReturnDate"]);
+                    return booktransaction;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public BookTransactionModel CheckUserReIssue(string UserId, string BookId)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("BooksSP", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "CheckUserReIssue");
+                cmd.Parameters.AddWithValue("@UserID", UserId);
+                cmd.Parameters.AddWithValue("@BookId", BookId);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+                if (dt.Rows.Count > 0)
+                {
+                    var booktransaction = new BookTransactionModel();
+                    booktransaction.IssueDate = Convert.ToDateTime(dt.Rows[0]["IssueDate"]);
+                    booktransaction.ReturnDate = Convert.ToDateTime(dt.Rows[0]["ReturnDate"]);
+                    return booktransaction;
+                }
+                return null;
             }
             catch (Exception ex)
             {

@@ -1766,6 +1766,7 @@
     <Content Include="Images\Background2.jpg" />
     <Content Include="Images\Background3.jpg" />
     <Content Include="Images\LMSystem.png" />
+    <Content Include="Images\NoImageBook.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\html2pdf.bundle.min.js" />
@@ -1787,11 +1788,12 @@
     <Content Include="Content\fonts\Monaco.ttf" />
     <Content Include="Content\fonts\Monaco.woff" />
     <Content Include="Content\fonts\_flaticon.scss" />
-    <Content Include="Areas\Staff\Views\Home\Index.cshtml" />
     <Content Include="Areas\Student\Views\Home\Index.cshtml" />
     <Content Include="Areas\librarians\Views\Home\Index.cshtml" />
     <Content Include="Areas\librarians\Views\Home\AddNewBook.cshtml" />
     <Content Include="Areas\librarians\Views\Home\BorrowBook.cshtml" />
+    <Content Include="Areas\librarians\Views\Home\ReturnBook.cshtml" />
+    <Content Include="Areas\librarians\Views\Home\ReIssueBook.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -1811,8 +1813,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\librarians\Controllers\HomeController.cs" />
     <Compile Include="Areas\librarians\librariansAreaRegistration.cs" />
-    <Compile Include="Areas\Staff\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\HomeController.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -1828,7 +1828,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="Areas\Student\Views\web.config" />
-    <Content Include="Areas\Staff\Views\web.config" />
     <Content Include="Areas\librarians\Views\web.config" />
     <Content Include="Content\ThemeFiles\build\js\.jscsrc" />
     <Content Include="Content\ThemeFiles\build\scss\.csslintrc" />
@@ -2037,6 +2036,7 @@
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Views\Account\Profile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2048,8 +2048,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\librarians\Data\" />
     <Folder Include="Areas\librarians\Views\Shared\" />
-    <Folder Include="Areas\Staff\Data\" />
-    <Folder Include="Areas\Staff\Views\Shared\" />
     <Folder Include="Areas\Student\Data\" />
     <Folder Include="Areas\Student\Views\Shared\" />
   </ItemGroup>
